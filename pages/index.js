@@ -5,12 +5,12 @@ import Item from '@/components/item'
 
 export default function Home() {
 
-  const list =
+  const announcement =
     {
       type: "announcement",
       courseId: "1234134",
       id: "133423",
-      text: "dummy text",
+      text: "dummy text dummy text dummy text dummy text dummy text dummy text dummy text dummy text dummy text dummy text",
       // materials: [],
       state: "PUBLISHED",
       alternateLink: "",
@@ -25,7 +25,39 @@ export default function Home() {
       // },
       creatorUserId: "string"
     }
-  
+
+    const assignment =
+    {
+      type: "assignment",
+      courseId: "string",
+      id: "string",
+      title: "string",
+      description: "more dummy text",
+      materials: [],
+      //state: enum (CourseWorkState),
+      alternateLink: "string",
+      creationTime: "string",
+      updateTime: "string",
+      //dueDate: {
+      //  object (Date)
+      //},
+      //dueTime: {
+      //  object (TimeOfDay)
+      //},
+      scheduledTime: "string",
+      maxPoints: 0,
+      //workType: enum (CourseWorkType),
+      associatedWithDeveloper: false,
+      //assigneeMode: enum (AssigneeMode),
+      //individualStudentsOptions: {
+      //  object (IndividualStudentsOptions)
+      //},
+      // submissionModificationMode: enum (SubmissionModificationMode),
+      creatorUserId: "string",
+      topicId: "string"//,
+      //gradeCategory: {
+      //  object (GradeCategory)
+      }
   return (
     <>
       <Head>
@@ -34,7 +66,10 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Item data={list} />
+      <main>
+        <Item data={assignment}/> 
+        <Item data={announcement}/>
+      </main>
     </>
   )
 }

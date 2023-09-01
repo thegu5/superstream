@@ -20,14 +20,16 @@ export default function Item ({data}) {
             </Card>
         )
     } else if (data.type === "assignment") {
-        <Card variant=''>
-            <CardContent orientation="horizontal">
-                <AssignmentIcon />
-                <Typography level="body-sm">
-                    {data.description}
-                </Typography>
-            </CardContent>
-        </Card>
+        return (
+            <Card variant=''>
+                <CardContent orientation="horizontal">
+                    <AssignmentIcon />
+                    <Typography level="body-sm">
+                        {data.description}
+                    </Typography>
+                </CardContent>
+            </Card>
+        )
     } else {
     }
 }

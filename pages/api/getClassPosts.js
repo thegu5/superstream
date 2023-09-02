@@ -99,6 +99,7 @@ export default async function handler(req, res) {
             }
             const author = await getAuthor(classroom, cw.creatorUserId, authorCache);
             return {
+              id: cw.id,
               title: cw.title,
               description: cw.description,
               creationTime: cw.creationTime, // guaranteed to work with `new Date()`
@@ -129,6 +130,7 @@ export default async function handler(req, res) {
             );
             console.log(getMaterials(announcement.materials));
             return {
+              id: announcement.id,
               title: "", // no titles
               description: announcement.text,
               creationTime: announcement.creationTime, // guaranteed to work with `new Date()`
@@ -153,6 +155,7 @@ export default async function handler(req, res) {
           materialsData.courseWorkMaterial.map(async (material) => {
             const author = await getAuthor(classroom, material.creatorUserId, authorCache);
             return {
+              id: material.id,
               title: material.title,
               description: material.description,
               creationTime: material.creationTime,
@@ -177,7 +180,7 @@ export default async function handler(req, res) {
       "Cache-Control",
       "private, s-maxage=10, stale-while-revalidate=20",
     );
-    res.status(200).json(posts);
+    res.status(200).json({posts});
   } catch (err) {
     res.status(400).json({ err: err.message });
   }

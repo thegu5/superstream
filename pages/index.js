@@ -8,7 +8,15 @@ import Announcement from "@/components/announcement";
 import Assignment from "@/components/assignment";
 import Material from "@/components/material";
 
-export default function Home() {
+export const getServerSideProps = async () => {
+  const baseUrl = process.env.NODE_ENV === 'PRODUCTION' ? 'https://test.com' : 'http://localhost:3000'
+  console.log(`${baseUrl}/api/getClassPosts?classes=620704651911`)
+  const res = await fetch(`${baseUrl}/api/getClassPosts?classes=620704651911`)
+  return { props: await res.json() }
+}
+export default function Home({ posts }) {
+  console.log(posts);
+
   const announcement = {
     type: "announcement",
     timestamp: "12:00 PM",
@@ -148,6 +156,20 @@ export default function Home() {
           flexDirection: "column",
         }}
       >
+        {
+          posts.map(post => {
+            switch (post.type) {
+              case "classwork":
+                return <Assignment key={post.id} data={post} />
+              case "material":
+                return <Material key={post.id} data={post} />
+              case "announcement":
+                return <Announcement key={post.id} data={post} />
+              default:
+                return <></>
+            }
+          })
+        }
         <Assignment data={assignment} />
         <Announcement data={announcement} />
         <Material data={material}/>

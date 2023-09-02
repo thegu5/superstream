@@ -14,8 +14,8 @@ export default function Home() {
     timestamp: "12:00 PM",
     date: "12:00 PM",
     author: {
-      "name": "David Chen",
-      "picture": "https://profile.pic/kjdsflsajfkldsjfklsdjf"
+      name: "David Chen",
+      picture: "https://profile.pic/kjdsflsajfkldsjfklsdjf",
     },
     courseId: "1234134",
     id: "133423",
@@ -43,8 +43,8 @@ export default function Home() {
     timestamp: "12:40 PM",
     title: "another title",
     author: {
-      "name": "First Last",
-      "picture": "https://profile.pic/kjdsflsajfkldsjfklsdjf"
+      name: "First Last",
+      picture: "https://profile.pic/kjdsflsajfkldsjfklsdjf",
     },
     description:
       "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -80,13 +80,14 @@ export default function Home() {
     courseId: "34534",
     id: "12341",
     title: "title three",
-    description: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    description:
+      "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     materials: [],
     // state: enum (CourseWorkMaterialState),
     alternateLink: "string",
     author: {
-      "name": "name mane",
-      "picture": "https://profile.pic/kjdsflsajfkldsjfklsdjf"
+      name: "name mane",
+      picture: "https://profile.pic/kjdsflsajfkldsjfklsdjf",
     },
     date: "adfadf",
     timestamp: "1:00 PM",
@@ -99,7 +100,7 @@ export default function Home() {
     //  object (IndividualStudentsOptions)
     //},
     creatorUserId: "string",
-    topicId: "string"
+    topicId: "string",
   };
   return (
     <>
@@ -123,7 +124,7 @@ export default function Home() {
       >
         <Assignment data={assignment} />
         <Announcement data={announcement} />
-        <Material data={material}/>
+        <Material data={material} />
       </main>
     </>
   );

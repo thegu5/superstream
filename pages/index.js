@@ -4,17 +4,23 @@ import { Inter } from "next/font/google";
 import Item from "@/components/item";
 import LeftSidebar from "@/components/sidebar-left";
 import RightSidebar from "@/components/sidebar-right";
+import Announcement from "@/components/announcement";
+import Assignment from "@/components/assignment";
+import Material from "@/components/material";
 
 export default function Home() {
   const announcement = {
     type: "announcement",
-    title: "title of lorem",
-    author: "Lorem Ipsum",
     timestamp: "12:00 PM",
+    date: "12:00 PM",
+    author: {
+      "name": "David Chen",
+      "picture": "https://profile.pic/kjdsflsajfkldsjfklsdjf"
+    },
     courseId: "1234134",
     id: "133423",
     text: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    // materials: [],
+    materials: [],
     state: "PUBLISHED",
     alternateLink: "",
     creationTime: "string",
@@ -31,14 +37,21 @@ export default function Home() {
 
   const assignment = {
     type: "assignment",
-    courseId: "string",
-    id: "string",
-    title: "string",
+    courseId: "1234123",
+    id: "345245",
+    date: "balh bladf",
+    timestamp: "12:40 PM",
+    title: "another title",
+    author: {
+      "name": "First Last",
+      "picture": "https://profile.pic/kjdsflsajfkldsjfklsdjf"
+    },
     description:
       "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     materials: [],
     //state: enum (CourseWorkState),
     alternateLink: "string",
+    url: "https://www.google.com/",
     creationTime: "string",
     updateTime: "string",
     //dueDate: {
@@ -61,6 +74,33 @@ export default function Home() {
     //gradeCategory: {
     //  object (GradeCategory)
   };
+
+  const material = {
+    type: "material",
+    courseId: "34534",
+    id: "12341",
+    title: "title three",
+    description: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    materials: [],
+    // state: enum (CourseWorkMaterialState),
+    alternateLink: "string",
+    author: {
+      "name": "name mane",
+      "picture": "https://profile.pic/kjdsflsajfkldsjfklsdjf"
+    },
+    date: "adfadf",
+    timestamp: "1:00 PM",
+    url: "https://www.google.com/",
+    creationTime: "string",
+    updateTime: "string",
+    scheduledTime: "string",
+    //"assigneeMode": enum (AssigneeMode),
+    //"individualStudentsOptions": {
+    //  object (IndividualStudentsOptions)
+    //},
+    creatorUserId: "string",
+    topicId: "string"
+  };
   return (
     <>
       <Head>
@@ -81,8 +121,9 @@ export default function Home() {
           flexDirection: "column",
         }}
       >
-        <Item data={assignment} />
-        <Item data={announcement} />
+        <Assignment data={assignment} />
+        <Announcement data={announcement} />
+        <Material data={material}/>
       </main>
     </>
   );

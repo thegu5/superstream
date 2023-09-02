@@ -9,7 +9,13 @@ import Button from '@mui/material/Button';
 import LaunchIcon from '@mui/icons-material/Launch';
 import Attachment from './attachment'
 import AttachmentList from './attachmentlist'
-export default function Item({ data, icon, title, body }) {
+export default function Item({ data, icon, title }) {
+  const date = new Date(data.dueDate || data.creationTime)
+  const time = date.toLocaleTimeString("en-US", {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
   return (
     <Card
       style={{
@@ -61,7 +67,7 @@ export default function Item({ data, icon, title, body }) {
             level="body-sm"
             style={{ fontSize: "1em", color: "#757575" }}
           >
-            {data.dueDate || data.updateTime}
+          {time}
           </Typography>
         </div>
       </div>
@@ -78,7 +84,7 @@ export default function Item({ data, icon, title, body }) {
           level="body-sm"
           className={"body-text"}
         >
-          {body}
+          {data.description}
         </Typography>
       </CardContent>
       <AttachmentList materials={data.materials} />

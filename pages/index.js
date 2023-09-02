@@ -19,9 +19,9 @@ export const getServerSideProps = async () => {
   const { posts, err: postErr } = await res.json();
   console.log(postErr);
   posts.sort((a,b) => {
-      let first = new Date(a.dueDate || a.updateTime);
-      let second = new Date(b.dueDate || b.updateTime);
-      return first > second ? -1 : 1
+      let first = new Date(a.dueDate || a.creationTime);
+      let second = new Date(b.dueDate || b.creationTime);
+      return first > second ? 1 : -1
   })
   return { props: { posts }}
 }

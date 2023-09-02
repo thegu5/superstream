@@ -62,7 +62,7 @@ export default function Item({ data, icon, title, body}) {
             level="body-sm"
             style={{ fontSize: "1em", color: "#757575" }}
           >
-            {data.timestamp}
+            {data.dueDate || data.updateTime}
           </Typography>
         </div>
       </div>

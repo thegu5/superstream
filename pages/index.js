@@ -20,7 +20,12 @@ export default function Home() {
     courseId: "1234134",
     id: "133423",
     text: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    materials: [],
+    materials: [{
+      type: "link",  // one of ["driveFile", "youtubeVideo", "link", "form"]
+      url: "https://en.wikipedia.org/wiki/Shoe",
+      title: "Shoes",
+      thumbnailUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Shoes.svg/1024px-Shoes.svg.png?20200130011142"
+    }],
     state: "PUBLISHED",
     alternateLink: "",
     creationTime: "string",
@@ -48,7 +53,18 @@ export default function Home() {
     },
     description:
       "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    materials: [],
+    materials: [{
+      type: "link",  // one of ["driveFile", "youtubeVideo", "link", "form"]
+      url: "https://en.wikipedia.org/wiki/Shoe",
+      title: "Shoes",
+      thumbnailUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Shoes.svg/1024px-Shoes.svg.png?20200130011142"
+    },
+    {
+      type: "link",  // one of ["driveFile", "youtubeVideo", "link", "form"]
+      url: "https://en.wikipedia.org/wiki/Shoe",
+      title: "Shoes",
+      thumbnailUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Shoes.svg/1024px-Shoes.svg.png?20200130011142"
+    }],
     //state: enum (CourseWorkState),
     alternateLink: "string",
     url: "https://www.google.com/",
@@ -81,7 +97,18 @@ export default function Home() {
     id: "12341",
     title: "title three",
     description: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    materials: [],
+    materials: [{
+      type: "link",  // one of ["driveFile", "youtubeVideo", "link", "form"]
+      url: "https://en.wikipedia.org/wiki/Shoe",
+      title: "Shoes",
+      thumbnailUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Shoes.svg/1024px-Shoes.svg.png?20200130011142"
+    },
+    {
+      type: "link",  // one of ["driveFile", "youtubeVideo", "link", "form"]
+      url: "https://en.wikipedia.org/wiki/Shoe",
+      title: "Shoes",
+      thumbnailUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Shoes.svg/1024px-Shoes.svg.png?20200130011142"
+    }],
     // state: enum (CourseWorkMaterialState),
     alternateLink: "string",
     author: {

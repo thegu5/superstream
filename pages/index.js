@@ -56,9 +56,15 @@ export default function Home() {
     materials: [{
       type: "link",  // one of ["driveFile", "youtubeVideo", "link", "form"]
       url: "https://en.wikipedia.org/wiki/Shoe",
-      title: "Shoes",
+      title: "Shoes this is a longer title",
       thumbnailUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Shoes.svg/1024px-Shoes.svg.png?20200130011142"
     },
+      {
+        type: "link",  // one of ["driveFile", "youtubeVideo", "link", "form"]
+        url: "https://en.wikipedia.org/wiki/Shoe",
+        title: "Shoes this is a longer title",
+        thumbnailUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Shoes.svg/1024px-Shoes.svg.png?20200130011142"
+      },
     {
       type: "link",  // one of ["driveFile", "youtubeVideo", "link", "form"]
       url: "https://en.wikipedia.org/wiki/Shoe",

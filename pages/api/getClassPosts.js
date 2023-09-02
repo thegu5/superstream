@@ -15,14 +15,17 @@ function isEmpty(obj) {
   return true;
 }
 
-async function getAuthor(classroom, userId) {
-  const creator = await classroom.userProfiles.get({
-    userId,
-  });
-  return {
-    name: creator.data.name.fullName,
-    picture: creator.data.photoUrl, // can be empty
-  };
+async function getAuthor(classroom, userId, authorCache) {
+  if (!(userId in authorCache)) {
+    const creator = await classroom.userProfiles.get({
+      userId,
+    });
+    authorCache[userId] = {
+      name: creator.data.name.fullName,
+      picture: creator.data.photoUrl, // can be empty
+    };
+  }
+  return authorCache[userId];
 }
 
 function getMaterials(materials) {
@@ -72,6 +75,7 @@ export default async function handler(req, res) {
     version: "v1",
     auth: google.auth.fromJSON(JSON.parse(tokenfile)),
   });
+  const authorCache = {};
   let classes = req.query["classes"]?.split(",");
   if (classes === undefined) return;
   try {
@@ -93,7 +97,7 @@ export default async function handler(req, res) {
               dueDate.setHours(cw.dueTime.hours);
               dueDate.setMinutes(cw.dueTime.minutes);
             }
-            const author = await getAuthor(classroom, cw.creatorUserId);
+            const author = await getAuthor(classroom, cw.creatorUserId, authorCache);
             return {
               title: cw.title,
               description: cw.description,
@@ -121,6 +125,7 @@ export default async function handler(req, res) {
             const author = await getAuthor(
               classroom,
               announcement.creatorUserId,
+                authorCache
             );
             console.log(getMaterials(announcement.materials));
             return {
@@ -146,7 +151,7 @@ export default async function handler(req, res) {
       if (!isEmpty(materialsData)) {
         newMaterials = await Promise.all(
           materialsData.courseWorkMaterial.map(async (material) => {
-            const author = await getAuthor(classroom, material.creatorUserId);
+            const author = await getAuthor(classroom, material.creatorUserId, authorCache);
             return {
               title: material.title,
               description: material.description,

@@ -1,4 +1,4 @@
-// Call format: /api/getClassPosts?classes=<classID>[,classId,classId...]
+// Call format: /api/classPosts?classes=<classID>[,classId,classId...]
 
 const { google } = require("googleapis");
 const fs = require("fs");

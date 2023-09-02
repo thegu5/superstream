@@ -10,8 +10,7 @@ import Material from "@/components/material";
 
 export const getServerSideProps = async () => {
   const baseUrl = process.env.NODE_ENV === 'PRODUCTION' ? 'https://test.com' : 'http://localhost:3000'
-  console.log(`${baseUrl}/api/getClassPosts?classes=620704651911`)
-  const res = await fetch(`${baseUrl}/api/getClassPosts?classes=620704651911`)
+  const res = await fetch(`${baseUrl}/api/classPosts?classes=620704651911`)
   return { props: await res.json() }
 }
 export default function Home({ posts }) {

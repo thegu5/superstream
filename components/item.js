@@ -7,8 +7,10 @@ import Avatar from "@mui/joy/Avatar";
 import BookIcon from '@mui/icons-material/Book';
 import Button from '@mui/material/Button';
 import LaunchIcon from '@mui/icons-material/Launch';
+import Attachment from './attachment'
+import AttachmentList from './attachmentlist'
 
-export default function Item({ data, icon, title, body }) {
+export default function Item({ data, icon, title, body}) {
   return (
     <Card
       style={{
@@ -80,14 +82,16 @@ export default function Item({ data, icon, title, body }) {
           {body}
         </Typography>
       </CardContent>
+      <Attachment material={data.materials[0]} />
       <Button color="primary" style={{
         // display: "flex",
-        // flexDirection: "row",
+        // flexDirection: "row", 
         alignItems: "center",
         justifyContent: "flex-start",
       }} href={data.url} target="_blank">
         <LaunchIcon></LaunchIcon>
       </Button>
+      
     </Card>
   );
 }

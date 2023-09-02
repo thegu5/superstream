@@ -15,17 +15,14 @@ export const getServerSideProps = async () => {
 
   const res = await fetch(`${baseUrl}/api/classPosts?classes=${classes.map(gClass => gClass.id).join(",")}`);
   const { posts } = await res.json();
-  let a = posts.sort((a,b) => {
+  posts.sort((a,b) => {
       let first = new Date(a.dueDate || a.updateTime);
       let second = new Date(b.dueDate || b.updateTime);
-      console.log("DEBU", first, second, first > second)
-      return first > second
+      return first > second ? -1 : 1
   })
-    a.map(post => console.log('due', post.dueDate, post.updateTime, post.classId))
-  return { props: { posts: a}}
+  return { props: { posts }}
 }
 export default function Home({ posts }) {
-    posts.map(post => console.log(post.updateTime))
   return (
     <>
       <Head>

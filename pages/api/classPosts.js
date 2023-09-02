@@ -92,7 +92,7 @@ export default async function handler(req, res) {
             if (cw.dueDate) {
               dueDate = new Date();
               dueDate.setFullYear(cw.dueDate.year);
-              dueDate.setMonth(cw.dueDate.month);
+              dueDate.setMonth(cw.dueDate.month - 1);
               dueDate.setDate(cw.dueDate.day);
               dueDate.setHours(cw.dueTime?.hours || 0);
               dueDate.setMinutes(cw.dueTime?.minutes || 0);

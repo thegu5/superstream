@@ -17,3 +17,13 @@ a {
   text-decoration: none;
 }
 
+.body-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  font-size: "0.9em";
+  font-weight: "500";
+}
+
+

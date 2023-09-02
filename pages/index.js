@@ -9,12 +9,15 @@ import Assignment from "@/components/assignment";
 import Material from "@/components/material";
 
 export const getServerSideProps = async () => {
-  const baseUrl = process.env.NODE_ENV === 'PRODUCTION' ? 'https://test.com' : 'http://localhost:3000'
+  // const baseUrl = process.env.NODE_ENV === 'PRODUCTION' ? 'https://test.com' : 'http://localhost:3000'
+  const baseUrl = 'https://ubiquitous-broccoli-j79q6grrx67hqrpp-3000.app.github.dev'
   const classListRest = await fetch(`${baseUrl}/api/classList`)
-  const { classes } = await classListRest.json()
+  const { classes, err: classErr } = await classListRest.json()
+  console.log(classErr);
 
   const res = await fetch(`${baseUrl}/api/classPosts?classes=${classes.map(gClass => gClass.id).join(",")}`);
-  const { posts } = await res.json();
+  const { posts, err: postErr } = await res.json();
+  console.log(postErr);
   posts.sort((a,b) => {
       let first = new Date(a.dueDate || a.updateTime);
       let second = new Date(b.dueDate || b.updateTime);

@@ -16,6 +16,7 @@ function isEmpty(obj) {
 }
 
 async function getAuthor(classroom, userId, authorCache) {
+  if (!userId) return {};
   if (!(userId in authorCache)) {
     const creator = await classroom.userProfiles.get({
       userId,
@@ -77,13 +78,14 @@ export default async function handler(req, res) {
   });
   const authorCache = {};
   let classes = req.query["classes"]?.split(",");
-  if (classes === undefined) return;
+  if (classes === undefined) res.status(404).json({ err: 'No classes given' });;
   try {
     let posts = [];
     for (let i in classes) {
       const resCourseWork = await classroom.courses.courseWork.list({
         courseId: classes[i],
       });
+      console.log(resCourseWork)
       let newCourseWork = [];
       if (!isEmpty(resCourseWork.data)) {
         newCourseWork = await Promise.all(

@@ -9,8 +9,7 @@ import Button from '@mui/material/Button';
 import LaunchIcon from '@mui/icons-material/Launch';
 import Attachment from './attachment'
 import AttachmentList from './attachmentlist'
-
-export default function Item({ data, icon, title, body}) {
+export default function Item({ data, icon, title, body }) {
   return (
     <Card
       style={{
@@ -77,7 +76,7 @@ export default function Item({ data, icon, title, body}) {
         {icon}
         <Typography
           level="body-sm"
-          style={{ fontSize: "0.9em", fontWeight: "500" }}
+          className={"body-text"}
         >
           {body}
         </Typography>
@@ -91,7 +90,7 @@ export default function Item({ data, icon, title, body}) {
       }} href={data.url} target="_blank">
         <LaunchIcon></LaunchIcon>
       </Button>
-      
+
     </Card>
   );
 }

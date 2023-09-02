@@ -11,7 +11,6 @@ import Attachment from './attachment'
 import AttachmentList from './attachmentlist'
 
 export default function Item({ data, icon, title, body}) {
-    const formatter = new Intl.RelativeTimeFormat('en', { style: 'short' });
   return (
     <Card
       style={{

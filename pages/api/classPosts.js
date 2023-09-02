@@ -94,8 +94,7 @@ export default async function handler(req, res) {
               dueDate.setFullYear(cw.dueDate.year);
               dueDate.setMonth(cw.dueDate.month - 1);
               dueDate.setDate(cw.dueDate.day);
-              dueDate.setHours(cw.dueTime?.hours || 0);
-              dueDate.setMinutes(cw.dueTime?.minutes || 0);
+              dueDate.setHours(cw.dueTime?.hours || 0, cw.dueTime?.minutes || 0);
             }
             const author = await getAuthor(classroom, cw.creatorUserId, authorCache);
             return {

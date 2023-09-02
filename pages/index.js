@@ -10,12 +10,13 @@ import Material from "@/components/material";
 
 export const getServerSideProps = async () => {
   const baseUrl = process.env.NODE_ENV === 'PRODUCTION' ? 'https://test.com' : 'http://localhost:3000'
-  const res = await fetch(`${baseUrl}/api/classPosts?classes=620704651911`)
+  const classListRest = await fetch(`${baseUrl}/api/classList`)
+  const { classes } = await classListRest.json()
+
+  const res = await fetch(`${baseUrl}/api/classPosts?classes=${classes.map(gClass => gClass.id).join(",")}`)
   return { props: await res.json() }
 }
 export default function Home({ posts }) {
-  console.log(posts);
-
   const announcement = {
     type: "announcement",
     timestamp: "12:00 PM",

@@ -82,7 +82,9 @@ export default function Item({ data, icon, title, body}) {
           {body}
         </Typography>
       </CardContent>
-      <Attachment material={data.materials[0]} />
+        {
+            data.materials?.map(material => <Attachment material={material} key={material.url}/>)
+        }
       <Button color="primary" style={{
         // display: "flex",
         // flexDirection: "row", 

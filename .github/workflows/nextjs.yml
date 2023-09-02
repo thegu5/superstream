@@ -31,6 +31,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Import token.json
+        run: printf ${{secrets.tokenBase64}} | base64 -d > token.json
+      - name: Import credentials.json
+        run: printf ${{secrets.credsBase64}} | base64 -d > credentials.json
       - name: Detect package manager
         id: detect-package-manager
         run: |

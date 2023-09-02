@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Sheet from "@mui/joy/Sheet";
 import Typography from "@mui/joy/Typography";
 import Avatar from "@mui/joy/Avatar";
@@ -14,13 +14,24 @@ export default function RightSidebar() {
     },
     {
       course: "BIO 101",
-      type: "Announcement"
+      type: "Announcement",
     },
     {
       course: "MATH 20C",
-      type: "Materials"
+      type: "Materials",
     },
   ];
+
+  const [checkedClasses, setCheckedClasses] = useState([false, false, false]);
+  const [checkedTypes, setCheckedTypes] = useState([false, false, false]);
+
+  const handleSelectAllClasses = (event) => {
+    setCheckedClasses(Array(data.length).fill(event.target.checked));
+  };
+
+  const handleSelectAllTypes = (event) => {
+    setCheckedTypes(Array(data.length).fill(event.target.checked));
+  };
 
   return (
     <>
@@ -67,14 +78,32 @@ export default function RightSidebar() {
               marginBottom: "15px",
             }}
           />
-          {data.map((item) => (
+          <Checkbox
+            label="All"
+            sx={{ width: "100%", marginBottom: "17px" }}
+            checked={checkedClasses.every(Boolean)}
+            indeterminate={
+              checkedClasses.some(Boolean) && !checkedClasses.every(Boolean)
+            }
+            onChange={handleSelectAllClasses}
+          />
+          {data.map((item, index) => (
             <Checkbox
+              key={index}
               label={item.course}
-              sx={{ width: "100%", marginBottom: "17px" }}
-              variant="soft"
+              checked={checkedClasses[index]}
+              onChange={(event) =>
+                setCheckedClasses([
+                  ...checkedClasses.slice(0, index),
+                  event.target.checked,
+                  ...checkedClasses.slice(index + 1),
+                ])
+              }
+              sx={{ width: "100%", marginBottom: "17px", marginLeft: "16px" }}
+              variant="outlined"
             />
           ))}
-          <Checkbox label="All" sx={{ width: "100%" }} variant="soft" />
+
           <Typography
             variant="body1"
             sx={{ marginTop: "32px", textAlign: "center" }}
@@ -89,14 +118,31 @@ export default function RightSidebar() {
               marginBottom: "15px",
             }}
           />
-           {data.map((item) => (
+          <Checkbox
+            label="All"
+            sx={{ width: "100%", marginBottom: "17px" }}
+            checked={checkedTypes.every(Boolean)}
+            indeterminate={
+              checkedTypes.some(Boolean) && !checkedTypes.every(Boolean)
+            }
+            onChange={handleSelectAllTypes}
+          />
+          {data.map((item, index) => (
             <Checkbox
+              key={index}
               label={item.type}
-              sx={{ width: "100%", marginBottom: "17px" }}
-              variant="soft"
+              checked={checkedTypes[index]}
+              onChange={(event) =>
+                setCheckedTypes([
+                  ...checkedTypes.slice(0, index),
+                  event.target.checked,
+                  ...checkedTypes.slice(index + 1),
+                ])
+              }
+              sx={{ width: "100%", marginBottom: "17px", marginLeft: "16px" }}
+              variant="outlined"
             />
           ))}
-          <Checkbox label="All" sx={{ width: "100%" }} variant="soft" />
         </div>
         {/*  */}
         <Sheet
@@ -109,7 +155,7 @@ export default function RightSidebar() {
             backgroundColor: "transparent",
           }}
         >
-          <div style={{display: "flex", alignItems: "center", gap: "15px"}}>
+          <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
             <Avatar
               alt="John"
               src="https://unsplash.com/s/photos/profile"
@@ -117,7 +163,6 @@ export default function RightSidebar() {
             />
             <Typography variant="body1">John</Typography>
           </div>
-          <SettingsIcon />
         </Sheet>
       </Sheet>
     </>

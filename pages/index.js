@@ -2,6 +2,8 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import Item from "@/components/item";
+import LeftSidebar from "@/components/sidebar-left";
+import RightSidebar from "@/components/sidebar-right";
 
 export default function Home() {
   const announcement = {
@@ -67,13 +69,15 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <LeftSidebar />
+      <RightSidebar />
       <main
         style={{
           // background: "red",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "100vh",
+          marginTop: "100px",
           flexDirection: "column",
         }}
       >

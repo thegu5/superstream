@@ -23,7 +23,7 @@ export default function Item({ data }) {
         <div
           style={{
             display: "flex",
-            flexDirection: "row",
+            flexDirection: "row-reverse",
             alignItems: "center",
             justifyContent: "space-between",
             marginBottom: "10px",
@@ -42,6 +42,7 @@ export default function Item({ data }) {
                 color: "#fff",
                 marginRight: "8px",
               }}
+              size="sm"
             >
               {data.author[0]}{" "}
               {/* Assuming the first letter of the author's name */}

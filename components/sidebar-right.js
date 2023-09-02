@@ -89,8 +89,8 @@ export default function RightSidebar() {
           />
           {data.map((item, index) => (
             <Checkbox
+              key={index}
               label={item.course}
-              Checkbox
               checked={checkedClasses[index]}
               onChange={(event) =>
                 setCheckedClasses([
@@ -129,6 +129,7 @@ export default function RightSidebar() {
           />
           {data.map((item, index) => (
             <Checkbox
+              key={index}
               label={item.type}
               checked={checkedTypes[index]}
               onChange={(event) =>
@@ -162,7 +163,6 @@ export default function RightSidebar() {
             />
             <Typography variant="body1">John</Typography>
           </div>
-          <SettingsIcon />
         </Sheet>
       </Sheet>
     </>

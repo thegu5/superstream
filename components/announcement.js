@@ -15,6 +15,6 @@ export default function Announcement({data}) {
           alignItems: "center",
           justifyContent: "center",
         }}/>}
-        title={data.author.name} body={data.text}/>
+        title={data.author.name}/>
         )
 }

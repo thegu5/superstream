@@ -7,8 +7,15 @@ import Avatar from "@mui/joy/Avatar";
 import BookIcon from '@mui/icons-material/Book';
 import Button from '@mui/material/Button';
 import LaunchIcon from '@mui/icons-material/Launch';
+import Attachment from './attachment'
+import AttachmentList from './attachmentlist'
+export default function Item({ data, icon, title }) {
+  const date = new Date(data.dueDate || data.creationTime)
+  const time = date.toLocaleTimeString("en-US", {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 
-export default function Item({ data, icon, title, body }) {
   return (
     <Card
       style={{
@@ -60,7 +67,7 @@ export default function Item({ data, icon, title, body }) {
             level="body-sm"
             style={{ fontSize: "1em", color: "#757575" }}
           >
-            {data.timestamp}
+          {time}
           </Typography>
         </div>
       </div>
@@ -75,19 +82,21 @@ export default function Item({ data, icon, title, body }) {
         {icon}
         <Typography
           level="body-sm"
-          style={{ fontSize: "0.9em", fontWeight: "500" }}
+          className={"body-text"}
         >
-          {body}
+          {data.description}
         </Typography>
       </CardContent>
+      <AttachmentList materials={data.materials} />
       <Button color="primary" style={{
         // display: "flex",
-        // flexDirection: "row",
+        // flexDirection: "row", 
         alignItems: "center",
         justifyContent: "flex-start",
       }} href={data.url} target="_blank">
         <LaunchIcon></LaunchIcon>
       </Button>
+
     </Card>
   );
 }

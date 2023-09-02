@@ -15,6 +15,6 @@ export default function Assignment({data}) {
           alignItems: "center",
           justifyContent: "center",
         }}/>}
-        title={data.title} body={data.description}/>
+        title={data.title}/>
     )
 }

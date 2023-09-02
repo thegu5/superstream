@@ -10,11 +10,8 @@ export default async function handler(req, res) {
     pageSize: 10,
   });
   let out = [];
-  console.log(response, response.data.courses);
   for (let i in response.data.courses) {
-    console.log("entered loop???????")
     const course = response.data.courses[i];
-    console.log(JSON.stringify(course));
     if (course.courseState !== "ACTIVE") continue;
     out.push({
       name: course.name,
@@ -22,5 +19,5 @@ export default async function handler(req, res) {
       url: course.alternateLink//.replace('/c/', '/u/{USERNUM}/c/')
     })
   }
-  res.status(200).json(out);
+  res.status(200).json({ classes: out });
 }

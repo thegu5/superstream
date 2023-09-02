@@ -82,7 +82,7 @@ export default function Item({ data, icon, title, body}) {
           {body}
         </Typography>
       </CardContent>
-      <Attachment material={data.materials[0]} />
+      <AttachmentList materials={data.materials} />
       <Button color="primary" style={{
         // display: "flex",
         // flexDirection: "row", 

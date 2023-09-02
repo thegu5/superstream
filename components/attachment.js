@@ -5,7 +5,8 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import {CardActionArea, Link} from "@mui/material";
-import Box from "@mui/material/Box"
+import AspectRatio from '@mui/joy/AspectRatio';
+
 
 export default function Attachment({material}) {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -21,7 +22,10 @@ export default function Attachment({material}) {
     const open = Boolean(anchorEl);
 
     return (
-        <div>
+        <div
+            style={{
+                width: 150
+            }}>
             <CardActionArea LinkComponent={Link} href={material.url} target="_blank">
                 <Card
                     aria-owns={open ? 'mouse-over-popover' : undefined}
@@ -29,31 +33,35 @@ export default function Attachment({material}) {
                     onMouseEnter={handlePopoverOpen}
                     onMouseLeave={handlePopoverClose}
                     style={{
-                        display: "flex"
+                        display: "flex",
+                        flexDirection: "row"
                     }}
                 >
-                    <CardMedia
-                        component="img"
-                        src={material.thumbnailUrl}
-                        alt=""
-                        style={{width: 100, height: 100}}
-                    />
-                    <Box style={{
-                        display: "flex", flexDirection: "column"
-                    }}>
-                        <CardContent
+                    <AspectRatio style={{width: 80}}>
+                        <CardMedia
+                            component="img"
+                            src={material.thumbnailUrl}
+                            alt=""
                             style={{
-                                flex: "1 0 auto"
-                            }}>
-                            <Typography component="div">
-                                {material.title}
-                            </Typography>
-                            <Typography component="div">
-                                {material.type}
-                            </Typography>
-
-                        </CardContent>
-                    </Box>
+                                alignSelf: "center"
+                            }}
+                        />
+                    </AspectRatio>
+                    <CardContent
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            textOverflow: "ellipsis",
+                            overflow: "hidden",
+                            whiteSpace: "nowrap",
+                        }}>
+                        <Typography>
+                            {material.title}
+                        </Typography>
+                        <Typography>
+                            {material.type}
+                        </Typography>
+                    </CardContent>
                 </Card>
             </CardActionArea>
             <Popover

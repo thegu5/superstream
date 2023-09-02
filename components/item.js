@@ -11,6 +11,7 @@ import Attachment from './attachment'
 import AttachmentList from './attachmentlist'
 
 export default function Item({ data, icon, title, body}) {
+    const formatter = new Intl.RelativeTimeFormat('en', { style: 'short' });
   return (
     <Card
       style={{
@@ -62,7 +63,7 @@ export default function Item({ data, icon, title, body}) {
             level="body-sm"
             style={{ fontSize: "1em", color: "#757575" }}
           >
-            {data.timestamp}
+            {data.dueDate || data.updateTime}
           </Typography>
         </div>
       </div>

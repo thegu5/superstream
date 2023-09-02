@@ -10,7 +10,6 @@ export default async function handler(req, res) {
     pageSize: 10,
   });
   let out = [];
-  console.log(response, response.data.courses);
   for (let i in response.data.courses) {
     const course = response.data.courses[i];
     if (course.courseState !== "ACTIVE") continue;

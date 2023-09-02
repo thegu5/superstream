@@ -13,129 +13,19 @@ export const getServerSideProps = async () => {
   const classListRest = await fetch(`${baseUrl}/api/classList`)
   const { classes } = await classListRest.json()
 
-  const res = await fetch(`${baseUrl}/api/classPosts?classes=${classes.map(gClass => gClass.id).join(",")}`)
-  return { props: await res.json() }
+  const res = await fetch(`${baseUrl}/api/classPosts?classes=${classes.map(gClass => gClass.id).join(",")}`);
+  const { posts } = await res.json();
+  let a = posts.sort((a,b) => {
+      let first = new Date(a.dueDate || a.updateTime);
+      let second = new Date(b.dueDate || b.updateTime);
+      console.log("DEBU", first, second, first > second)
+      return first > second
+  })
+    a.map(post => console.log('due', post.dueDate, post.updateTime, post.classId))
+  return { props: { posts: a}}
 }
 export default function Home({ posts }) {
-  const announcement = {
-    type: "announcement",
-    timestamp: "12:00 PM",
-    date: "12:00 PM",
-    author: {
-      "name": "David Chen",
-      "picture": "https://profile.pic/kjdsflsajfkldsjfklsdjf"
-    },
-    courseId: "1234134",
-    id: "133423",
-    text: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    materials: [{
-      type: "link",  // one of ["driveFile", "youtubeVideo", "link", "form"]
-      url: "https://en.wikipedia.org/wiki/Shoe",
-      title: "Shoes",
-      thumbnailUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Shoes.svg/1024px-Shoes.svg.png?20200130011142"
-    }],
-    state: "PUBLISHED",
-    alternateLink: "",
-    creationTime: "string",
-    updateTime: "string",
-    scheduledTime: "string",
-    assigneeMode: "ALL_STUDENTS",
-    // individualStudentsOptions: {
-    //   {
-    //     studentIds: ["3938"]
-    //   }
-    // },
-    creatorUserId: "string",
-  };
-
-  const assignment = {
-    type: "assignment",
-    courseId: "1234123",
-    id: "345245",
-    date: "balh bladf",
-    timestamp: "12:40 PM",
-    title: "another title",
-    author: {
-      "name": "First Last",
-      "picture": "https://profile.pic/kjdsflsajfkldsjfklsdjf"
-    },
-    description:
-      "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    materials: [{
-      type: "link",  // one of ["driveFile", "youtubeVideo", "link", "form"]
-      url: "https://en.wikipedia.org/wiki/Shoe",
-      title: "Shoes",
-      thumbnailUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Shoes.svg/1024px-Shoes.svg.png?20200130011142"
-    },
-    {
-      type: "link",  // one of ["driveFile", "youtubeVideo", "link", "form"]
-      url: "https://en.wikipedia.org/wiki/Shoe",
-      title: "Shoes",
-      thumbnailUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Shoes.svg/1024px-Shoes.svg.png?20200130011142"
-    }],
-    //state: enum (CourseWorkState),
-    alternateLink: "string",
-    url: "https://www.google.com/",
-    creationTime: "string",
-    updateTime: "string",
-    //dueDate: {
-    //  object (Date)
-    //},
-    //dueTime: {
-    //  object (TimeOfDay)
-    //},
-    scheduledTime: "string",
-    maxPoints: 0,
-    //workType: enum (CourseWorkType),
-    associatedWithDeveloper: false,
-    //assigneeMode: enum (AssigneeMode),
-    //individualStudentsOptions: {
-    //  object (IndividualStudentsOptions)
-    //},
-    // submissionModificationMode: enum (SubmissionModificationMode),
-    creatorUserId: "string",
-    topicId: "string", //,
-    //gradeCategory: {
-    //  object (GradeCategory)
-  };
-
-  const material = {
-    type: "material",
-    courseId: "34534",
-    id: "12341",
-    title: "title three",
-    description: "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    materials: [{
-      type: "link",  // one of ["driveFile", "youtubeVideo", "link", "form"]
-      url: "https://en.wikipedia.org/wiki/Shoe",
-      title: "Shoes",
-      thumbnailUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Shoes.svg/1024px-Shoes.svg.png?20200130011142"
-    },
-    {
-      type: "link",  // one of ["driveFile", "youtubeVideo", "link", "form"]
-      url: "https://en.wikipedia.org/wiki/Shoe",
-      title: "Shoes",
-      thumbnailUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Shoes.svg/1024px-Shoes.svg.png?20200130011142"
-    }],
-    // state: enum (CourseWorkMaterialState),
-    alternateLink: "string",
-    author: {
-      "name": "name mane",
-      "picture": "https://profile.pic/kjdsflsajfkldsjfklsdjf"
-    },
-    date: "adfadf",
-    timestamp: "1:00 PM",
-    url: "https://www.google.com/",
-    creationTime: "string",
-    updateTime: "string",
-    scheduledTime: "string",
-    //"assigneeMode": enum (AssigneeMode),
-    //"individualStudentsOptions": {
-    //  object (IndividualStudentsOptions)
-    //},
-    creatorUserId: "string",
-    topicId: "string"
-  };
+    posts.map(post => console.log(post.updateTime))
   return (
     <>
       <Head>
@@ -170,9 +60,6 @@ export default function Home({ posts }) {
             }
           })
         }
-        <Assignment data={assignment} />
-        <Announcement data={announcement} />
-        <Material data={material}/>
       </main>
     </>
   );

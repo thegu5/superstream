@@ -94,8 +94,8 @@ export default async function handler(req, res) {
               dueDate.setFullYear(cw.dueDate.year);
               dueDate.setMonth(cw.dueDate.month);
               dueDate.setDate(cw.dueDate.day);
-              dueDate.setHours(cw.dueTime.hours);
-              dueDate.setMinutes(cw.dueTime.minutes);
+              dueDate.setHours(cw.dueTime?.hours || 0);
+              dueDate.setMinutes(cw.dueTime?.minutes || 0);
             }
             const author = await getAuthor(classroom, cw.creatorUserId, authorCache);
             return {
@@ -128,7 +128,6 @@ export default async function handler(req, res) {
               announcement.creatorUserId,
                 authorCache
             );
-            console.log(getMaterials(announcement.materials));
             return {
               id: announcement.id,
               title: "", // no titles

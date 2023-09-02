@@ -1,4 +1,4 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+// Call format: /api/getClassPosts?classes=<classID>[,classId,classId...]
 
 const { google } = require("googleapis");
 const fs = require("fs");

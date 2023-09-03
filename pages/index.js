@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
@@ -10,22 +11,35 @@ import Material from "@/components/material";
 
 export const getServerSideProps = async () => {
   // const baseUrl = process.env.NODE_ENV === 'PRODUCTION' ? 'https://test.com' : 'http://localhost:3000'
-  const baseUrl = 'https://ubiquitous-broccoli-j79q6grrx67hqrpp-3000.app.github.dev'
-  const classListRest = await fetch(`${baseUrl}/api/classList`)
-  const { classes, err: classErr } = await classListRest.json()
+  const baseUrl = "http://localhost:3000";
+  const classListRest = await fetch(`${baseUrl}/api/classList`);
+  const { classes, err: classErr } = await classListRest.json();
   console.log(classErr);
 
-  const res = await fetch(`${baseUrl}/api/classPosts?classes=${classes.map(gClass => gClass.id).join(",")}`);
+  const res = await fetch(
+    `${baseUrl}/api/classPosts?classes=${classes
+      .map((gClass) => gClass.id)
+      .join(",")}`
+  );
   const { posts, err: postErr } = await res.json();
   console.log(postErr);
-  posts.sort((a,b) => {
-      let first = new Date(a.dueDate || a.creationTime);
-      let second = new Date(b.dueDate || b.creationTime);
-      return first > second ? 1 : -1
-  })
-  return { props: { posts }}
-}
-export default function Home({ posts }) {
+  posts.sort((a, b) => {
+    let first = new Date(a.dueDate || a.creationTime);
+    let second = new Date(b.dueDate || b.creationTime);
+    return first > second ? 1 : -1;
+  });
+  return { props: { posts, classes } };
+};
+export default function Home({ posts, classes }) {
+  const [filters, setFilters] = useState({ classId: [], type: [] });
+  console.log(filters);
+
+  const filteredPosts = posts.filter(
+    (post) =>
+      (filters.classId.length === 0 ||
+        filters.classId.includes(post.classId)) &&
+      (filters.type.length === 0 || filters.type.includes(post.type))
+  );
   return (
     <>
       <Head>
@@ -35,7 +49,7 @@ export default function Home({ posts }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <LeftSidebar />
-      <RightSidebar />
+      <RightSidebar filters={filters} setFilters={setFilters} data={classes} />
       <main
         style={{
           // background: "red",
@@ -46,20 +60,18 @@ export default function Home({ posts }) {
           flexDirection: "column",
         }}
       >
-        {
-          posts.map(post => {
-            switch (post.type) {
-              case "classwork":
-                return <Assignment key={post.id} data={post} />
-              case "material":
-                return <Material key={post.id} data={post} />
-              case "announcement":
-                return <Announcement key={post.id} data={post} />
-              default:
-                return <></>
-            }
-          })
-        }
+        {filteredPosts.map((post) => {
+          switch (post.type) {
+            case "classwork":
+              return <Assignment key={post.id} data={post} />;
+            case "material":
+              return <Material key={post.id} data={post} />;
+            case "announcement":
+              return <Announcement key={post.id} data={post} />;
+            default:
+              return <></>;
+          }
+        })}
       </main>
     </>
   );

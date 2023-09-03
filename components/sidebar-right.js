@@ -6,21 +6,52 @@ import Checkbox from "@mui/joy/Checkbox";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Divider from "@mui/joy/Divider";
 
-export default function RightSidebar() {
-  const data = [
-    {
-      course: "CSE 110",
-      type: "Assignment",
-    },
-    {
-      course: "BIO 101",
-      type: "Announcement",
-    },
-    {
-      course: "MATH 20C",
-      type: "Materials",
-    },
-  ];
+export default function RightSidebar({ data, filters, setFilters }) {
+  const types = ["Classwork", "Announcement", "Material"]; // .toLowerCase() when filtering
+  // const data = [
+  //   {
+  //     course: "CSE 110",
+  //     type: "Assignment",
+  //   },
+  //   {
+  //     course: "BIO 101",
+  //     type: "Announcement",
+  //   },
+  //   {
+  //     course: "MATH 20C",
+  //     type: "Materials",
+  //   },
+  // ];
+
+  const handleClassCheckboxChange = (event, index) => {
+    const newCheckedClasses = [
+      ...checkedClasses.slice(0, index),
+      event.target.checked,
+      ...checkedClasses.slice(index + 1),
+    ];
+    setCheckedClasses(newCheckedClasses);
+
+    const newFilterClassIds = data
+      .filter((_, i) => newCheckedClasses[i])
+      .map((item) => item.id); // Assuming item.course is the classId
+
+    setFilters({ ...filters, classId: newFilterClassIds });
+  };
+
+  const handleTypeCheckboxChange = (event, index) => {
+    const newCheckedTypes = [
+      ...checkedTypes.slice(0, index),
+      event.target.checked,
+      ...checkedTypes.slice(index + 1),
+    ];
+    setCheckedTypes(newCheckedTypes);
+
+    const newFilterTypes = types
+      .filter((_, i) => newCheckedTypes[i])
+      .map((item) => item.toLowerCase());
+
+    setFilters({ ...filters, type: newFilterTypes });
+  };
 
   const [checkedClasses, setCheckedClasses] = useState([false, false, false]);
   const [checkedTypes, setCheckedTypes] = useState([false, false, false]);
@@ -30,7 +61,7 @@ export default function RightSidebar() {
   };
 
   const handleSelectAllTypes = (event) => {
-    setCheckedTypes(Array(data.length).fill(event.target.checked));
+    setCheckedTypes(Array(types.length).fill(event.target.checked));
   };
 
   return (
@@ -90,15 +121,10 @@ export default function RightSidebar() {
           {data.map((item, index) => (
             <Checkbox
               key={index}
-              label={item.course}
+              label={item.name}
               checked={checkedClasses[index]}
-              onChange={(event) =>
-                setCheckedClasses([
-                  ...checkedClasses.slice(0, index),
-                  event.target.checked,
-                  ...checkedClasses.slice(index + 1),
-                ])
-              }
+              onChange={(event) => handleClassCheckboxChange(event, index)}
+              // onChange={handleClassCheckboxChange}
               sx={{ width: "100%", marginBottom: "17px", marginLeft: "16px" }}
               variant="outlined"
             />
@@ -127,18 +153,12 @@ export default function RightSidebar() {
             }
             onChange={handleSelectAllTypes}
           />
-          {data.map((item, index) => (
+          {types.map((item, index) => (
             <Checkbox
               key={index}
-              label={item.type}
+              label={item}
               checked={checkedTypes[index]}
-              onChange={(event) =>
-                setCheckedTypes([
-                  ...checkedTypes.slice(0, index),
-                  event.target.checked,
-                  ...checkedTypes.slice(index + 1),
-                ])
-              }
+              onChange={(event) => handleTypeCheckboxChange(event, index)}
               sx={{ width: "100%", marginBottom: "17px", marginLeft: "16px" }}
               variant="outlined"
             />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CircularProgress from "@mui/joy/CircularProgress";
 import Sheet from "@mui/joy/Sheet";
 import Typography from "@mui/joy/Typography";
@@ -13,17 +13,21 @@ import ModalDialog from "@mui/joy/ModalDialog";
 import Stack from "@mui/joy/Stack";
 
 export default function LeftSidebar() {
-  const data = [
-    {
-      course: "CSE 110",
-    },
-    {
-      course: "BIO 101",
-    },
-    {
-      course: "MATH 20C",
-    },
-  ];
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/classList");
+        const data = await res.json();
+        setCourses(data.classes);
+      } catch (error) {
+        console.error("An error occurred while fetching data: ", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState("idle");
@@ -102,9 +106,9 @@ export default function LeftSidebar() {
             My Courses
           </Typography>
           <Divider style={{ marginBottom: "42px" }} />
-          {data.map((item) => (
+          {courses.map((course, index) => (
             <div
-              key={item}
+              key={index}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -126,7 +130,7 @@ export default function LeftSidebar() {
                 }}
               >
                 <Avatar
-                  alt={item.course}
+                  alt={course.name}
                   src={"https://unsplash.com/s/photos/school"}
                   style={{
                     width: "35px",
@@ -134,7 +138,7 @@ export default function LeftSidebar() {
                     marginRight: "16px",
                   }}
                 />
-                <Typography variant="body1">{item.course}</Typography>
+                <Typography variant="body1">{course.name}</Typography>
               </Button>
             </div>
           ))}
@@ -155,10 +159,10 @@ export default function LeftSidebar() {
             sx={{ maxWidth: 500 }}
           >
             <Typography id="basic-modal-dialog-title" level="h2">
-              Create new project
+              Did you see a bug?
             </Typography>
             <Typography id="basic-modal-dialog-description">
-              Fill in the information of the project.
+              Fill out the form to report a bug.
             </Typography>
             {loading === "idle" && (
               <form onSubmit={handleSubmit}>
@@ -173,7 +177,7 @@ export default function LeftSidebar() {
                     />
                   </FormControl>
                   <FormControl>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>Bug Description</FormLabel>
                     <Input
                       required
                       value={bugDescription}

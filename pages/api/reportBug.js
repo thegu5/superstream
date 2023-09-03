@@ -10,15 +10,15 @@ export default async function handler(req, res) {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "seriousbro23@gmail.com",
-      pass: "xocarjrhqxbyftaf",
+      user: process.env.EMAIL,
+      pass: process.env.PASS,
     },
   });
 
   // Mail options
   const mailOptions = {
-    from: "seriousbro23@gmail.com",
-    to: "seriousbro23@gmail.com",
+    from: process.env.EMAIL,
+    to: process.env.EMAIL,
     subject: `Bug Report: ${bugTitle}`,
     html: `
     <div style="font-family: 'Poppins', sans-serif; background-color: #f9f9f9; text-align: center; padding: 20px;">

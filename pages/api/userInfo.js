@@ -7,5 +7,7 @@ export default async function handler(req, res) {
     const response = await classroom.userProfiles.get({
         userId: 'me'
     })
-    res.status(200).json(response.data);
+    let data = response.data;
+    data.emailAddress = undefined;
+    res.status(200).json(data);
 }

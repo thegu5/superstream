@@ -6,7 +6,7 @@ import Checkbox from "@mui/joy/Checkbox";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Divider from "@mui/joy/Divider";
 
-export default function RightSidebar() {
+export default function RightSidebar({ userinfores }) {
   const data = [
     {
       course: "CSE 110",
@@ -32,7 +32,7 @@ export default function RightSidebar() {
   const handleSelectAllTypes = (event) => {
     setCheckedTypes(Array(data.length).fill(event.target.checked));
   };
-
+  console.log(JSON.stringify(userinfores))
   return (
     <>
       <Sheet
@@ -158,10 +158,10 @@ export default function RightSidebar() {
           <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
             <Avatar
               alt="John"
-              src="https://unsplash.com/s/photos/profile"
+              src={userinfores.photoUrl}
               sx={{ width: "35px", height: "35px" }}
             />
-            <Typography variant="body1">John</Typography>
+            <Typography variant="body1">{userinfores.name.fullName}</Typography>
           </div>
         </Sheet>
       </Sheet>

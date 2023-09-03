@@ -35,7 +35,7 @@ export default function Item({ data, icon, title }) {
         style={{
           padding: 10,
         }}
-        LinkComponent={Link} href={data.url} target="_blank">
+        LinkComponent={Link} href={data.url.replace('/c/', '/u/2/c/')} target="_blank">
         <div
           style={{
             display: "flex",

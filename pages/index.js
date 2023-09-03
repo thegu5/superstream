@@ -8,8 +8,10 @@ import RightSidebar from "@/components/sidebar-right";
 import Announcement from "@/components/announcement";
 import Assignment from "@/components/assignment";
 import Material from "@/components/material";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import Typography from "@mui/joy/Typography";
+import Divider from '@mui/material/Divider';
+
 
 
 export const getServerSideProps = async () => {
@@ -17,19 +19,24 @@ export const getServerSideProps = async () => {
   const baseUrl = 'https://ubiquitous-broccoli-j79q6grrx67hqrpp-3000.app.github.dev'
   const classListRest = await fetch(`${baseUrl}/api/classList`)
   const { classes, err: classErr } = await classListRest.json()
-  console.log(classes)
 
   const res = await fetch(`${baseUrl}/api/classPosts?classes=${classes.map(gClass => gClass.id).join(",")}`);
   const { posts, err: postErr } = await res.json();
-  console.log("posts")
   posts.sort((a, b) => {
     let first = new Date(a.dueDate || a.creationTime);
     let second = new Date(b.dueDate || b.creationTime);
     return first > second ? 1 : -1
   })
-  return { props: { posts } }
+  const userinfores = await fetch(`${baseUrl}/api/userInfo`).then(res => res.json())
+  return { props: { posts, userinfores } }
+
+
 }
-export default function Home({ posts }) {
+export default function Home({ posts, userinfores }) {
+  useEffect(() => {
+     window.location.hash = ''
+     window.location.hash = (new Date()).toLocaleDateString()
+  })
   let lastDay = "";
   return (
     <>
@@ -40,7 +47,7 @@ export default function Home({ posts }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <LeftSidebar />
-      <RightSidebar />
+      <RightSidebar userinfores={userinfores} />
       <main
         style={{
           // background: "red",
@@ -56,8 +63,8 @@ export default function Home({ posts }) {
             const date = (post.dueDate || post.creationTime);
             const [localDay, setLocalDay] = useState("");
             useEffect(() => {
-               setLocalDay(new Date(post.dueDate || post.creationTime).toLocaleDateString())
-             }, [])
+              setLocalDay(new Date(post.dueDate || post.creationTime).toLocaleDateString())
+            }, [])
             console.log(post.type)
             switch (post.type) {
               case "classwork":
@@ -72,13 +79,19 @@ export default function Home({ posts }) {
                   console.log(lastDay);
                   return (
                     <>
-                    
-                    <Typography>{localDay}</Typography>
-                    <Assignment key={post.id} data={post} />
+                      <div style={{
+                        margin: 10,
+                      }}>
+                        <Typography id={localDay} style={{color: "#555E68"}}>{localDay}</Typography>
+                        <Divider style={{
+                          margin: 10,
+                        }} flexItem="true"></Divider>
+                      </div>
+                      <Assignment key={post.id} data={post} />
                     </>
                   )
                 } else {
-                console.log("no.")
+                  console.log("no.")
                   console.log(typeof localDay + ' ' + localDay.length);
                   console.log(typeof lastDay + ' ' + lastDay.length);
                   return <Assignment key={post.id} data={post} />
@@ -88,9 +101,15 @@ export default function Home({ posts }) {
                   lastDay = localDay;
                   return (
                     <>
-                    
-                    <Typography>{localDay}</Typography>
-                    <Material key={post.id} data={post} />
+                      <div style={{
+                        margin: 10,
+                      }}>
+                        <Typography id={localDay}  style={{color: "#555E68"}}>{localDay}</Typography>
+                        <Divider style={{
+                          margin: 10,
+                        }} flexItem="true"></Divider>
+                      </div>
+                      <Material key={post.id} data={post} />
                     </>
                   )
                 } else {
@@ -101,9 +120,16 @@ export default function Home({ posts }) {
                   lastDay = localDay;
                   return (
                     <>
-                    
-                    <Typography>{localDay}</Typography>
-                    <Announcement key={post.id} data={post} />
+                      <div style={{
+                        margin: 10,
+                      }}>
+
+                        <Typography id={localDay}  style={{color: "#555E68"}}>{localDay}</Typography>
+                        <Divider style={{
+                          margin: 10,
+                        }} flexItem="true"></Divider>
+                      </div>
+                      <Announcement key={post.id} data={post} />
                     </>
                   )
                 } else {
@@ -114,7 +140,7 @@ export default function Home({ posts }) {
             }
           })
         }
-      </main>
+      </main >
     </>
   );
 }

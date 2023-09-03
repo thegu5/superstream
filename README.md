@@ -1,4 +1,4 @@
-## Superstream
+## SuperStream
 
 ### Overview
 - A view of Google Classroom optimized for the workflow of power users
@@ -16,6 +16,13 @@ Using this project requires generating the appropriate credentials associated wi
 ### Additional Information
 
 #### Tech Stack
+- Backend and frontend in Next.js
+- Retrieved class and user data from Google Classroom's API using the backend
+- Material UI for the UI components of the frontend
 #### Challenges
-
+- Merge conflicts that we were able to resolve through Github
+- Making the API interfaces consistent as a result of the Google API's various nested objects and strange schemas
+- Navigating the authentication process to use Google's API
+- Using Material UI for the first time
 #### What we learned
+- How to make use of GitHub codespaces and other features to facilitate effective collaboration

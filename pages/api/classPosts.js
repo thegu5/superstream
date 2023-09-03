@@ -85,7 +85,6 @@ export default async function handler(req, res) {
       const resCourseWork = await classroom.courses.courseWork.list({
         courseId: classes[i],
       });
-      console.log(resCourseWork)
       let newCourseWork = [];
       if (!isEmpty(resCourseWork.data)) {
         newCourseWork = await Promise.all(

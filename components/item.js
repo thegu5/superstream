@@ -7,15 +7,16 @@ import Avatar from "@mui/joy/Avatar";
 import BookIcon from '@mui/icons-material/Book';
 import Button from '@mui/material/Button';
 import LaunchIcon from '@mui/icons-material/Launch';
-import Attachment from './attachment'
-import AttachmentList from './attachmentlist'
-export default function Item({ data, icon, title }) {
-  const date = new Date(data.dueDate || data.creationTime)
-  const time = date.toLocaleTimeString("en-US", {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+import Attachment from './attachment';
+import AttachmentList from './attachmentlist';
+import { useEffect, useState } from "react";
 
+export default function Item({ data, icon, title }) {
+  const date = (data.dueDate || data.creationTime);
+  const [localTimestamp, setLocalTimestamp] = useState("");
+  useEffect(() => {
+    setLocalTimestamp(new Date(data.dueDate || data.creationTime).toLocaleTimeString('en-UK', {hour: '2-digit', minute:'2-digit'}))
+  }, [])
   return (
     <Card
       style={{
@@ -51,7 +52,7 @@ export default function Item({ data, icon, title }) {
           }}>
           {title}
         </Typography>
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div style={{ display: "flex", alignItems: "center",}}>
           <Avatar
             style={{
               backgroundColor: "#00796B",
@@ -63,12 +64,7 @@ export default function Item({ data, icon, title }) {
             {data.author.name[0]}
             {/* Assuming the first letter of the author's name */}
           </Avatar>
-          <Typography
-            level="body-sm"
-            style={{ fontSize: "1em", color: "#757575" }}
-          >
-          {time}
-          </Typography>
+            <p>{localTimestamp}</p>
         </div>
       </div>
       <CardContent

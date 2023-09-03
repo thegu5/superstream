@@ -13,11 +13,9 @@ export const getServerSideProps = async () => {
   const baseUrl = 'https://ubiquitous-broccoli-j79q6grrx67hqrpp-3000.app.github.dev'
   const classListRest = await fetch(`${baseUrl}/api/classList`)
   const { classes, err: classErr } = await classListRest.json()
-  console.log(classErr);
 
   const res = await fetch(`${baseUrl}/api/classPosts?classes=${classes.map(gClass => gClass.id).join(",")}`);
   const { posts, err: postErr } = await res.json();
-  console.log(postErr);
   posts.sort((a,b) => {
       let first = new Date(a.dueDate || a.creationTime);
       let second = new Date(b.dueDate || b.creationTime);

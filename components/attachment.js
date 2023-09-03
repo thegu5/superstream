@@ -11,7 +11,7 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import AddToDriveIcon from '@mui/icons-material/AddToDrive';
 import ArticleIcon from '@mui/icons-material/Article';
 import LinkIcon from '@mui/icons-material/Link';
-import convertIcon from "./util.js"
+import * as util from "./util.js";
 
 export default function Attachment({ material }) {
 
@@ -42,31 +42,20 @@ export default function Attachment({ material }) {
                         alignItems: "center",
                     }}
                 >
-                    {convertIcon(material.type)}
+                    {util.convertIcon(material.type)}
                     <p
-                    style={{
-                        marginLeft: 5,
-                        textOverflow: "ellipsis",
-                        overflow: "hidden",
-                        whiteSpace: "nowrap",
-                        alignSelf: "center",
-                    }}
+                        style={{
+                            marginLeft: 5,
+                            textOverflow: "ellipsis",
+                            overflow: "hidden",
+                            whiteSpace: "nowrap",
+                            alignSelf: "center",
+                        }}
                     >
-                    {material.title}
+                        {util.convertTitle(material)}
                     </p>
                 </Card>
             </CardActionArea>
-            {/* <AddCircleIcon
-                aria-owns={open ? 'mouse-over-popover' : undefined}
-                aria-haspopup="true"
-                onMouseEnter={handlePopoverOpen}
-                onMouseLeave={handlePopoverClose}
-                style={{
-                    display: "flex",
-                    flexDirection: "row"
-                }}
-                onClick={ () => window.open(material.url, '_blank')}
-            /> */}
             <Popover
                 id="mouse-over-popover"
                 sx={{
@@ -97,16 +86,18 @@ export default function Attachment({ material }) {
                             alignItems: "center",
                         }}
                     >
-                        <AspectRatio style={{ width: 80 }}>
-                            <CardMedia
-                                component="img"
-                                src={material.thumbnailUrl}
-                                alt=""
-                                style={{
-                                    alignSelf: "center"
-                                }}
-                            />
-                        </AspectRatio>
+                        {material.type === "youtubeVideo" &&
+                            <AspectRatio style={{ width: 80 }}>
+                                <CardMedia
+                                    component="img"
+                                    src={material.thumbnailUrl}
+                                    alt=""
+                                    style={{
+                                        alignSelf: "center"
+                                    }}
+                                />
+                            </AspectRatio>
+                        }
                         <CardContent
                             style={{
                                 display: "flex",
@@ -116,7 +107,7 @@ export default function Attachment({ material }) {
                                 {material.title}
                             </Typography>
                             <Typography>
-                                {material.type}
+                                {util.convertType(material.type)}
                             </Typography>
                         </CardContent>
                     </Card>

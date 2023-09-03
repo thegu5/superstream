@@ -2,28 +2,35 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import Item from "@/components/item";
+import DayDivider from "@/components/daydivider";
 import LeftSidebar from "@/components/sidebar-left";
 import RightSidebar from "@/components/sidebar-right";
 import Announcement from "@/components/announcement";
 import Assignment from "@/components/assignment";
 import Material from "@/components/material";
+import {useEffect, useState} from "react";
+import Typography from "@mui/joy/Typography";
+
 
 export const getServerSideProps = async () => {
   // const baseUrl = process.env.NODE_ENV === 'PRODUCTION' ? 'https://test.com' : 'http://localhost:3000'
   const baseUrl = 'https://ubiquitous-broccoli-j79q6grrx67hqrpp-3000.app.github.dev'
   const classListRest = await fetch(`${baseUrl}/api/classList`)
   const { classes, err: classErr } = await classListRest.json()
+  console.log(classes)
 
   const res = await fetch(`${baseUrl}/api/classPosts?classes=${classes.map(gClass => gClass.id).join(",")}`);
   const { posts, err: postErr } = await res.json();
-  posts.sort((a,b) => {
-      let first = new Date(a.dueDate || a.creationTime);
-      let second = new Date(b.dueDate || b.creationTime);
-      return first > second ? 1 : -1
+  console.log("posts")
+  posts.sort((a, b) => {
+    let first = new Date(a.dueDate || a.creationTime);
+    let second = new Date(b.dueDate || b.creationTime);
+    return first > second ? 1 : -1
   })
-  return { props: { posts }}
+  return { props: { posts } }
 }
 export default function Home({ posts }) {
+  let lastDay = "";
   return (
     <>
       <Head>
@@ -46,13 +53,62 @@ export default function Home({ posts }) {
       >
         {
           posts.map(post => {
+            const date = (post.dueDate || post.creationTime);
+            const [localDay, setLocalDay] = useState("");
+            useEffect(() => {
+               setLocalDay(new Date(post.dueDate || post.creationTime).toLocaleDateString())
+             }, [])
+            console.log(post.type)
             switch (post.type) {
               case "classwork":
-                return <Assignment key={post.id} data={post} />
+                console.log('isclasswork')
+                if (lastDay !== localDay) {
+                  console.log(lastDay);
+                  console.log('between')
+                  console.log(localDay);
+                  lastDay = localDay;
+                  console.log(localDay);
+                  console.log('between', localDay)
+                  console.log(lastDay);
+                  return (
+                    <>
+                    
+                    <Typography>{localDay}</Typography>
+                    <Assignment key={post.id} data={post} />
+                    </>
+                  )
+                } else {
+                console.log("no.")
+                  console.log(typeof localDay + ' ' + localDay.length);
+                  console.log(typeof lastDay + ' ' + lastDay.length);
+                  return <Assignment key={post.id} data={post} />
+                }
               case "material":
-                return <Material key={post.id} data={post} />
+                if (lastDay !== localDay) {
+                  lastDay = localDay;
+                  return (
+                    <>
+                    
+                    <Typography>{localDay}</Typography>
+                    <Material key={post.id} data={post} />
+                    </>
+                  )
+                } else {
+                  return <Material key={post.id} data={post} />
+                }
               case "announcement":
-                return <Announcement key={post.id} data={post} />
+                if (lastDay !== localDay) {
+                  lastDay = localDay;
+                  return (
+                    <>
+                    
+                    <Typography>{localDay}</Typography>
+                    <Announcement key={post.id} data={post} />
+                    </>
+                  )
+                } else {
+                  return <Announcement key={post.id} data={post} />
+                }
               default:
                 return <></>
             }

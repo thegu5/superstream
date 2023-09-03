@@ -3,26 +3,10 @@ import Sheet from "@mui/joy/Sheet";
 import Typography from "@mui/joy/Typography";
 import Avatar from "@mui/joy/Avatar";
 import Checkbox from "@mui/joy/Checkbox";
-import SettingsIcon from "@mui/icons-material/Settings";
 import Divider from "@mui/joy/Divider";
 
-export default function RightSidebar({ data, filters, setFilters }) {
+export default function RightSidebar({ data, filters, setFilters, userinfores }) {
   const types = ["Classwork", "Announcement", "Material"]; // .toLowerCase() when filtering
-  // const data = [
-  //   {
-  //     course: "CSE 110",
-  //     type: "Assignment",
-  //   },
-  //   {
-  //     course: "BIO 101",
-  //     type: "Announcement",
-  //   },
-  //   {
-  //     course: "MATH 20C",
-  //     type: "Materials",
-  //   },
-  // ];
-
   const handleClassCheckboxChange = (event, index) => {
     const newCheckedClasses = [
       ...checkedClasses.slice(0, index),
@@ -63,7 +47,6 @@ export default function RightSidebar({ data, filters, setFilters }) {
   const handleSelectAllTypes = (event) => {
     setCheckedTypes(Array(types.length).fill(event.target.checked));
   };
-
   return (
     <>
       <Sheet
@@ -178,10 +161,10 @@ export default function RightSidebar({ data, filters, setFilters }) {
           <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
             <Avatar
               alt="John"
-              src="https://unsplash.com/s/photos/profile"
+              src={userinfores.photoUrl}
               sx={{ width: "35px", height: "35px" }}
             />
-            <Typography variant="body1">John</Typography>
+            <Typography variant="body1">{userinfores.name.fullName}</Typography>
           </div>
         </Sheet>
       </Sheet>

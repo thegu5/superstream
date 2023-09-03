@@ -7,96 +7,84 @@ import Avatar from "@mui/joy/Avatar";
 import BookIcon from '@mui/icons-material/Book';
 import Button from '@mui/material/Button';
 import LaunchIcon from '@mui/icons-material/Launch';
-import Attachment from './attachment'
-import AttachmentList from './attachmentlist'
-export default function Item({ data, icon, title }) {
-  const date = new Date(data.dueDate || data.creationTime)
-  const time = date.toLocaleTimeString("en-US", {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+import Attachment from './attachment';
+import AttachmentList from './attachmentlist';
+import { CardActionArea, Link } from "@mui/material";
+import { useEffect, useState } from "react";
 
+export default function Item({ data, icon, title }) {
+  const date = (data.dueDate || data.creationTime);
+  const [localTimestamp, setLocalTimestamp] = useState("");
+  useEffect(() => {
+    setLocalTimestamp(new Date(data.dueDate || data.creationTime).toLocaleTimeString('en-UK', { hour: '2-digit', minute: '2-digit' }))
+  }, [])
   return (
     <Card
       style={{
-        width: "400px",
         backgroundColor: "#fafafa",
         border: "1px solid #e0e0e0",
+        width: "400px",
         borderRadius: "8px",
         padding: "26px",
         marginBottom: "20px",
         paddingBottom: "30px",
         maxheight: "500px",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: "10px",
-        }}
-      >
+      }}>
 
-        <Typography
-          level="body-sm"
+      <CardActionArea
+        style={{
+          padding: 10,
+        }}
+        LinkComponent={Link} href={data.url.replace('/c/', '/u/2/c/')} target="_blank">
+        <div
           style={{
-            fontSize: "1.2em",
-            fontWeight: "600",
             display: "flex",
-            flexDirection: "row-reverse",
             alignItems: "center",
             justifyContent: "space-between",
             marginBottom: "10px",
-          }}>
-          {title}
-        </Typography>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <Avatar
-            style={{
-              backgroundColor: "#00796B",
-              color: "#fff",
-              marginRight: "8px",
-            }}
-            size="sm"
-          >
-            {data.author.name[0]}
-            {/* Assuming the first letter of the author's name */}
-          </Avatar>
+          }}
+        >
           <Typography
             level="body-sm"
-            style={{ fontSize: "1em", color: "#757575" }}
-          >
-          {time}
+            style={{
+              fontSize: "1.2em",
+              fontWeight: "600",
+            }}>
+            {title}
           </Typography>
+          <div style={{ display: "flex", alignItems: "center", }}>
+            <Avatar
+              src={data.author.picture}
+              style={{
+                marginRight: "8px",
+              }}
+              size="sm"
+            >
+              {data.author.name[0]}
+              {/* Assuming the first letter of the author's name */}
+            </Avatar>
+            <p>{localTimestamp}</p>
+          </div>
         </div>
-      </div>
-      <CardContent
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "flex-start",
-        }}
-      >
-        {icon}
-        <Typography
-          level="body-sm"
-          className={"body-text"}
+        <CardContent
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "flex-start",
+          }}
         >
-          {data.description}
-        </Typography>
-      </CardContent>
+          {icon}
+          <Typography
+            level="body-sm"
+            className={"body-text"}
+          >
+            {data.description}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
       <AttachmentList materials={data.materials} />
-      <Button color="primary" style={{
-        // display: "flex",
-        // flexDirection: "row", 
-        alignItems: "center",
-        justifyContent: "flex-start",
-      }} href={data.url} target="_blank">
-        <LaunchIcon></LaunchIcon>
-      </Button>
+    </Card >
 
-    </Card>
   );
 }

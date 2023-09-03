@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import Item from "@/components/item";
 import LeftSidebar from "@/components/sidebar-left";
 import RightSidebar from "@/components/sidebar-right";
 import Announcement from "@/components/announcement";
 import Assignment from "@/components/assignment";
 import Material from "@/components/material";
+import Typography from "@mui/joy/Typography";
+import Divider from '@mui/material/Divider';
 
 export const getServerSideProps = async () => {
   // const baseUrl = process.env.NODE_ENV === 'PRODUCTION' ? 'https://test.com' : 'http://localhost:3000'
   const baseUrl = "http://localhost:3000";
   const classListRest = await fetch(`${baseUrl}/api/classList`);
   const { classes, err: classErr } = await classListRest.json();
-  console.log(classErr);
 
   const res = await fetch(
     `${baseUrl}/api/classPosts?classes=${classes
@@ -22,17 +20,16 @@ export const getServerSideProps = async () => {
       .join(",")}`
   );
   const { posts, err: postErr } = await res.json();
-  console.log(postErr);
   posts.sort((a, b) => {
     let first = new Date(a.dueDate || a.creationTime);
     let second = new Date(b.dueDate || b.creationTime);
     return first > second ? 1 : -1;
-  });
-  return { props: { posts, classes } };
+  })
+  const userinfores = await fetch(`${baseUrl}/api/userInfo`).then(res => res.json())
+  return { props: { posts, userinfores, classes } };
 };
-export default function Home({ posts, classes }) {
+export default function Home({ posts, userinfores, classes }) {
   const [filters, setFilters] = useState({ classId: [], type: [] });
-  console.log(filters);
 
   const filteredPosts = posts.filter(
     (post) =>
@@ -40,6 +37,11 @@ export default function Home({ posts, classes }) {
         filters.classId.includes(post.classId)) &&
       (filters.type.length === 0 || filters.type.includes(post.type))
   );
+  useEffect(() => {
+     window.location.hash = ''
+     window.location.hash = (new Date()).toLocaleDateString()
+  })
+  let lastDay = "";
   return (
     <>
       <Head>
@@ -49,7 +51,7 @@ export default function Home({ posts, classes }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <LeftSidebar />
-      <RightSidebar filters={filters} setFilters={setFilters} data={classes} />
+      <RightSidebar filters={filters} setFilters={setFilters} data={classes} userinfores={userinfores} />
       <main
         style={{
           // background: "red",
@@ -60,19 +62,75 @@ export default function Home({ posts, classes }) {
           flexDirection: "column",
         }}
       >
-        {filteredPosts.map((post) => {
-          switch (post.type) {
-            case "classwork":
-              return <Assignment key={post.id} data={post} />;
-            case "material":
-              return <Material key={post.id} data={post} />;
-            case "announcement":
-              return <Announcement key={post.id} data={post} />;
-            default:
-              return <></>;
-          }
-        })}
-      </main>
+        {
+          filteredPosts.map(post => {
+            const date = (post.dueDate || post.creationTime);
+            const localDay = new Date(post.dueDate || post.creationTime).toLocaleDateString();
+            switch (post.type) {
+              case "classwork":
+                if (lastDay !== localDay) {
+                  lastDay = localDay;
+                  return (
+                    <>
+                      <div style={{
+                        margin: 10,
+                      }}>
+                        <Typography id={localDay} style={{color: "#555E68"}}>{localDay}</Typography>
+                        <Divider style={{
+                          margin: 10,
+                        }} flexItem="true"></Divider>
+                      </div>
+                      <Assignment key={post.id} data={post} />
+                    </>
+                  )
+                } else {
+                  return <Assignment key={post.id} data={post} />
+                }
+              case "material":
+                if (lastDay !== localDay) {
+                  lastDay = localDay;
+                  return (
+                    <>
+                      <div style={{
+                        margin: 10,
+                      }}>
+                        <Typography id={localDay}  style={{color: "#555E68"}}>{localDay}</Typography>
+                        <Divider style={{
+                          margin: 10,
+                        }} flexItem="true"></Divider>
+                      </div>
+                      <Material key={post.id} data={post} />
+                    </>
+                  )
+                } else {
+                  return <Material key={post.id} data={post} />
+                }
+              case "announcement":
+                if (lastDay !== localDay) {
+                  lastDay = localDay;
+                  return (
+                    <>
+                      <div style={{
+                        margin: 10,
+                      }}>
+
+                        <Typography id={localDay}  style={{color: "#555E68"}}>{localDay}</Typography>
+                        <Divider style={{
+                          margin: 10,
+                        }} flexItem="true"></Divider>
+                      </div>
+                      <Announcement key={post.id} data={post} />
+                    </>
+                  )
+                } else {
+                  return <Announcement key={post.id} data={post} />
+                }
+              default:
+                return <></>
+            }
+          })
+        }
+      </main >
     </>
   );
 }

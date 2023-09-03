@@ -1,7 +1,7 @@
 ## Superstream
 
 ### Overview
-- A view of Google Classroom optimized for the workflow for power users
+- A view of Google Classroom optimized for the workflow of power users
 - All activity is sorted into one stream, with options to filter for classes and activity type
 - Links directly to Google Classroom pages
 

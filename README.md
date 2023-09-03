@@ -6,11 +6,19 @@
 - Links directly to Google Classroom pages
 
 
-### Instructions
+## Get Started
+
+### Installation
+Clone the repository with `git clone`. Make sure you have a relatively recent node version, then `npm install`. You may need to change the `baseUrl` in `pages/index.js` depending on what enviroment you're in. `npm run dev` for the development server, `npm run build` to build for production and `npm run start` to run the build.
 
 #### Authentication
 
-Using this project requires generating the appropriate credentials associated with the Google account you want to use. Before proceeding, please read the [Google Classroom API Python Quickstart](https://developers.google.com/classroom/quickstart/python). Follow the instructions until the **Configure the sample** step. Additionally, you must add  http://localhost:3001/ as a redirect URI to the Google Cloud project. 
+Using this project requires generating the appropriate credentials associated with the Google account you want to use. Before proceeding, please read the [Google Classroom API Python Quickstart](https://developers.google.com/classroom/quickstart/python). Follow the instructions until the **Configure the sample** step. Keep in mind:
+- http://localhost:3001/ needs to be a redirect URI in the Google Cloud project
+- Your credentials.json should be placed in the quickstart/ folder
+- Once authentication is complete, move both jsons to the root directory
+-   If you get an error saying client_email is missing, add the following key-value pair to token.json: `"type": "authorized_user"`
+-   You may need to change the user number in the code depending on how many google accounts you're logged into if the links to google classroom don't work.
 
 
 ### Additional Information

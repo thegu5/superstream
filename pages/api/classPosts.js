@@ -77,8 +77,11 @@ export default async function handler(req, res) {
     auth: google.auth.fromJSON(JSON.parse(tokenfile)),
   });
   const authorCache = {};
-  let classes = req.query["classes"]?.split(",");
-  if (classes === undefined) res.status(404).json({ err: 'No classes given' });;
+  // let classes = req.query["classes"]?.split(",");
+  let classes =
+    req.query["filteredClasses"]?.split(",") ||
+    req.query["classes"]?.split(",");
+  if (classes === undefined) res.status(404).json({ err: "No classes given" });
   try {
     let posts = [];
     for (let i in classes) {
@@ -95,9 +98,16 @@ export default async function handler(req, res) {
               dueDate.setFullYear(cw.dueDate.year);
               dueDate.setMonth(cw.dueDate.month - 1);
               dueDate.setDate(cw.dueDate.day);
-              dueDate.setHours(cw.dueTime?.hours || 0, cw.dueTime?.minutes || 0);
+              dueDate.setHours(
+                cw.dueTime?.hours || 0,
+                cw.dueTime?.minutes || 0
+              );
             }
-            const author = await getAuthor(classroom, cw.creatorUserId, authorCache);
+            const author = await getAuthor(
+              classroom,
+              cw.creatorUserId,
+              authorCache
+            );
             return {
               id: cw.id,
               title: cw.title,
@@ -111,7 +121,7 @@ export default async function handler(req, res) {
               url: cw.alternateLink,
               type: "classwork",
             };
-          }),
+          })
         );
       }
 
@@ -126,7 +136,7 @@ export default async function handler(req, res) {
             const author = await getAuthor(
               classroom,
               announcement.creatorUserId,
-                authorCache
+              authorCache
             );
             return {
               id: announcement.id,
@@ -140,7 +150,7 @@ export default async function handler(req, res) {
               url: announcement.alternateLink,
               type: "announcement",
             };
-          }),
+          })
         );
       }
 
@@ -152,7 +162,11 @@ export default async function handler(req, res) {
       if (!isEmpty(materialsData)) {
         newMaterials = await Promise.all(
           materialsData.courseWorkMaterial.map(async (material) => {
-            const author = await getAuthor(classroom, material.creatorUserId, authorCache);
+            const author = await getAuthor(
+              classroom,
+              material.creatorUserId,
+              authorCache
+            );
             return {
               id: material.id,
               title: material.title,
@@ -165,7 +179,7 @@ export default async function handler(req, res) {
               url: material.alternateLink,
               type: "material",
             };
-          }),
+          })
         );
       }
 
@@ -177,9 +191,9 @@ export default async function handler(req, res) {
     // enable caching
     res.setHeader(
       "Cache-Control",
-      "private, s-maxage=10, stale-while-revalidate=20",
+      "private, s-maxage=10, stale-while-revalidate=20"
     );
-    res.status(200).json({posts});
+    res.status(200).json({ posts });
   } catch (err) {
     res.status(400).json({ err: err.message });
   }

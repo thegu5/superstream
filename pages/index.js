@@ -1,38 +1,42 @@
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import Item from "@/components/item";
-import DayDivider from "@/components/daydivider";
 import LeftSidebar from "@/components/sidebar-left";
 import RightSidebar from "@/components/sidebar-right";
 import Announcement from "@/components/announcement";
 import Assignment from "@/components/assignment";
 import Material from "@/components/material";
-import { useEffect, useState } from "react";
 import Typography from "@mui/joy/Typography";
 import Divider from '@mui/material/Divider';
 
-
-
 export const getServerSideProps = async () => {
   // const baseUrl = process.env.NODE_ENV === 'PRODUCTION' ? 'https://test.com' : 'http://localhost:3000'
-  const baseUrl = 'http://localhost:3000'
-  const classListRest = await fetch(`${baseUrl}/api/classList`)
-  const { classes, err: classErr } = await classListRest.json()
+  const baseUrl = "http://localhost:3000";
+  const classListRest = await fetch(`${baseUrl}/api/classList`);
+  const { classes, err: classErr } = await classListRest.json();
 
-  const res = await fetch(`${baseUrl}/api/classPosts?classes=${classes.map(gClass => gClass.id).join(",")}`);
+  const res = await fetch(
+    `${baseUrl}/api/classPosts?classes=${classes
+      .map((gClass) => gClass.id)
+      .join(",")}`
+  );
   const { posts, err: postErr } = await res.json();
   posts.sort((a, b) => {
     let first = new Date(a.dueDate || a.creationTime);
     let second = new Date(b.dueDate || b.creationTime);
-    return first > second ? 1 : -1
+    return first > second ? 1 : -1;
   })
   const userinfores = await fetch(`${baseUrl}/api/userInfo`).then(res => res.json())
-  return { props: { posts, userinfores } }
+  return { props: { posts, userinfores, classes } };
+};
+export default function Home({ posts, userinfores, classes }) {
+  const [filters, setFilters] = useState({ classId: [], type: [] });
 
-
-}
-export default function Home({ posts, userinfores }) {
+  const filteredPosts = posts.filter(
+    (post) =>
+      (filters.classId.length === 0 ||
+        filters.classId.includes(post.classId)) &&
+      (filters.type.length === 0 || filters.type.includes(post.type))
+  );
   useEffect(() => {
      window.location.hash = ''
      window.location.hash = (new Date()).toLocaleDateString()
@@ -47,7 +51,7 @@ export default function Home({ posts, userinfores }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <LeftSidebar />
-      <RightSidebar userinfores={userinfores} />
+      <RightSidebar filters={filters} setFilters={setFilters} data={classes} userinfores={userinfores} />
       <main
         style={{
           // background: "red",
@@ -59,21 +63,13 @@ export default function Home({ posts, userinfores }) {
         }}
       >
         {
-          posts.map(post => {
+          filteredPosts.map(post => {
             const date = (post.dueDate || post.creationTime);
             const localDay = new Date(post.dueDate || post.creationTime).toLocaleDateString();
-            console.log(post.type)
             switch (post.type) {
               case "classwork":
-                console.log('isclasswork')
                 if (lastDay !== localDay) {
-                  console.log(lastDay);
-                  console.log('between')
-                  console.log(localDay);
                   lastDay = localDay;
-                  console.log(localDay);
-                  console.log('between', localDay)
-                  console.log(lastDay);
                   return (
                     <>
                       <div style={{
@@ -88,9 +84,6 @@ export default function Home({ posts, userinfores }) {
                     </>
                   )
                 } else {
-                  console.log("no.")
-                  console.log(typeof localDay + ' ' + localDay.length);
-                  console.log(typeof lastDay + ' ' + lastDay.length);
                   return <Assignment key={post.id} data={post} />
                 }
               case "material":

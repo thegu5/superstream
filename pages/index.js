@@ -16,7 +16,7 @@ import Divider from '@mui/material/Divider';
 
 export const getServerSideProps = async () => {
   // const baseUrl = process.env.NODE_ENV === 'PRODUCTION' ? 'https://test.com' : 'http://localhost:3000'
-  const baseUrl = 'https://ubiquitous-broccoli-j79q6grrx67hqrpp-3000.app.github.dev'
+  const baseUrl = 'http://localhost:3000'
   const classListRest = await fetch(`${baseUrl}/api/classList`)
   const { classes, err: classErr } = await classListRest.json()
 
@@ -61,10 +61,7 @@ export default function Home({ posts, userinfores }) {
         {
           posts.map(post => {
             const date = (post.dueDate || post.creationTime);
-            const [localDay, setLocalDay] = useState("");
-            useEffect(() => {
-              setLocalDay(new Date(post.dueDate || post.creationTime).toLocaleDateString())
-            }, [])
+            const localDay = new Date(post.dueDate || post.creationTime).toLocaleDateString();
             console.log(post.type)
             switch (post.type) {
               case "classwork":
